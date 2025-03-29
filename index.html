@@ -1,0 +1,147 @@
+#index.html<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FraudGuardAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FraudGuardAI</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+        <div class="hero">
+            <h1>Protect Yourself from Phishing Attacks</h1>
+            <p>Use our AI-driven tool to detect phishing emails.</p>
+            <a href="#scanner" class="cta-button">Get Started</a>
+        </div>
+    </header>
+
+    <section id="scanner" class="scanner-section">
+        <h2><i class="fas fa-shield-alt"></i> Email Threat Scanner</h2>
+        
+        <form id="email-form">
+            <label for="email-content">Paste email content:</label>
+            <textarea id="email-content" placeholder="Paste suspicious email here..." rows="8"></textarea>
+            <button type="submit" class="analyze-button" id="analyze-email-btn">
+                <i class="fas fa-search"></i> Analyze Email
+            </button>
+        </form>
+        
+        <div id="result" class="result-container"></div>
+        
+        <!-- Results Modal -->
+        <div id="result-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3 id="modal-title">Email Analysis Results</h3>
+                <div id="modal-body">
+                    <div id="email-results" class="result-section">
+                        <h4><i class="fas fa-envelope"></i> Email Analysis</h4>
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <span class="result-label">Prediction:</span>
+                                <span id="prediction-text" class="result-value"></span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Confidence:</span>
+                                <span id="confidence-text" class="result-value"></span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Links Found:</span>
+                                <span id="links-count" class="result-value"></span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Sensitive Keywords:</span>
+                                <span id="keywords-count" class="result-value"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="detected-links" class="link-section">
+                        <h4><i class="fas fa-link"></i> Detected Links</h4>
+                        <div id="link-results-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <h2><i class="fas fa-info-circle"></i> About FraudGuardAI</h2>
+        <div class="about-content">
+            <p>FraudGuardAI is an advanced phishing detection system that uses machine learning to protect users from email scams.</p>
+        </div>
+    </section>
+
+    <section id="features" class="features-section">
+        <h2><i class="fas fa-star"></i> Key Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-envelope-open-text"></i>
+                <h3>Email Analysis</h3>
+                <p>Detects phishing attempts in email content including suspicious links and social engineering tactics.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-clock"></i>
+                <h3>Quick Detection</h3>
+                <p>Analyzes emails in seconds with our optimized machine learning models.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Real-Time Results</h3>
+                <p>Provides instant analysis with detailed threat breakdown and confidence scores.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="cta-button">Send Message</button>
+        </form>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">FraudGuardAI</div>
+            <div class="footer-links">
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#contact">Contact</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2025 FraudGuardAI. All rights reserved.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>python
