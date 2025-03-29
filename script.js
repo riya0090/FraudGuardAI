@@ -9,33 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Tab switching functionality
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabContents = document.querySelectorAll('.tab-content');
-    
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons and contents
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // Add active class to clicked button and corresponding content
-            button.classList.add('active');
-            const tabId = button.getAttribute('data-tab');
-            document.getElementById(`${tabId}-tab`).classList.add('active');
-        });
-    });
-
-    // Form submissions
+    // Form submission
     const emailForm = document.getElementById('email-form');
-    const websiteForm = document.getElementById('website-form');
     
     if (emailForm) {
         emailForm.addEventListener('submit', handleEmailSubmit);
-    }
-    
-    if (websiteForm) {
-        websiteForm.addEventListener('submit', handleWebsiteSubmit);
     }
 
     // Modal functionality
@@ -103,64 +81,10 @@ function handleEmailSubmit(event) {
     });
 }
 
-// Handle website form submission
-function handleWebsiteSubmit(event) {
-    event.preventDefault();
-    
-    const websiteUrl = document.getElementById('website-url').value.trim();
-    const resultElement = document.getElementById('result');
-    
-    if (!websiteUrl) {
-        showResult('⚠ Please enter a website URL to analyze', 'error');
-        return;
-    }
-
-    // Validate URL format
-    if (!isValidUrl(websiteUrl)) {
-        showResult('❌ Please enter a valid URL (e.g., https://example.com)', 'error');
-        return;
-    }
-
-    // Show loading state
-    resultElement.innerHTML = `
-        <div class="loading-text">
-            <div class="loading"></div>
-            Scanning website...
-        </div>
-    `;
-    resultElement.style.display = 'block';
-
-    fetch("/scan/website", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ url: websiteUrl })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.error) {
-            showResult(`❌ Error: ${data.error}`, 'error');
-        } else {
-            displayWebsiteResults(data);
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        showResult("❌ Error scanning website. Please try again.", 'error');
-    });
-}
-
 // Display email analysis results
 function displayEmailResults(data) {
     const modal = document.getElementById('result-modal');
     const modalTitle = document.getElementById('modal-title');
-    const emailResults = document.getElementById('email-results');
     const isPhishing = data.prediction === "Phishing Email";
     
     // Update modal title
@@ -172,10 +96,6 @@ function displayEmailResults(data) {
     document.getElementById('confidence-text').textContent = `${(data.confidence * 100).toFixed(2)}%`;
     document.getElementById('links-count').textContent = data.features.num_links;
     document.getElementById('keywords-count').textContent = data.features.sensitive_keywords;
-    
-    // Show email results and hide website results
-    emailResults.style.display = 'block';
-    document.getElementById('website-results').style.display = 'none';
     
     // Show modal
     modal.style.display = 'block';
@@ -240,7 +160,7 @@ function scanSingleLink(url) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email_text: url }) // Sending URL as email_text for simplicity
+        body: JSON.stringify({ email_text: url })
     })
     .then(response => {
         if (!response.ok) {
@@ -260,58 +180,6 @@ function scanSingleLink(url) {
         console.error(`Error scanning link ${url}:`, error);
         return { url, error: error.message };
     });
-}
-
-// Display website analysis results
-function displayWebsiteResults(data) {
-    const modal = document.getElementById('result-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const websiteResults = document.getElementById('website-results');
-    
-    // Determine verdict
-    let verdict = 'Safe';
-    let verdictClass = 'text-safe';
-    
-    if (data.malicious > 0) {
-        verdict = 'Dangerous';
-        verdictClass = 'text-danger';
-    } else if (data.suspicious > 0) {
-        verdict = 'Suspicious';
-        verdictClass = 'text-warning';
-    }
-    
-    // Update modal title
-    modalTitle.textContent = `Website Analysis: ${verdict}`;
-    
-    // Update website results section
-    document.getElementById('verdict-text').textContent = verdict;
-    document.getElementById('verdict-text').className = `result-value ${verdictClass}`;
-    document.getElementById('malicious-count').textContent = data.malicious || 0;
-    document.getElementById('suspicious-count').textContent = data.suspicious || 0;
-    
-    if (data.report_link) {
-        const reportLink = document.getElementById('report-link');
-        reportLink.href = data.report_link;
-        reportLink.textContent = 'View Detailed Report';
-    }
-    
-    // Show website results and hide email results
-    websiteResults.style.display = 'block';
-    document.getElementById('email-results').style.display = 'none';
-    document.getElementById('detected-links').style.display = 'none';
-    
-    // Show modal
-    modal.style.display = 'block';
-}
-
-// Helper function to validate URL format
-function isValidUrl(string) {
-    try {
-        new URL(string);
-        return true;
-    } catch (_) {
-        return false;
-    }
 }
 
 // Helper function to show simple result messages
