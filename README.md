@@ -47,19 +47,6 @@ python analyze_website.py --url https://example.com
 2. **Website Scanning**: Inspects domain reputation, SSL certificates, and webpage content for scam indicators.
 3. **Machine Learning Model**: Uses trained classifiers to detect fraudulent patterns and score threats.
 
-## Contributing
-We welcome contributions! To contribute:
-1. Fork the repository.
-2. Create a new branch (`feature/your-feature-name`).
-3. Commit your changes.
-4. Open a pull request.
-
-## License
-This project is licensed under the MIT License. See `LICENSE` for more details.
-
-## Contact
-For questions or support, reach out at [your.email@example.com] or open an issue on GitHub.
-
 ---
 Protect yourself from online fraud with **FrausGuardAI**! 🛡️
 
